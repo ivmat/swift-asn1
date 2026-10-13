@@ -1604,9 +1604,7 @@ class ASN1Tests: XCTestCase {
         XCTAssertThrowsError(try ASN1ObjectIdentifier(berEncoded: node))
         XCTAssertThrowsError(try ASN1ObjectIdentifier(derEncoded: node))
     }
-}
 
-extension ASN1Tests {
     func testDERRejectsLongFormLengthForSingleOctet() throws {
         // OCTET STRING length 1 must use short form in DER.
         XCTAssertThrowsError(try DER.parse([0x04, 0x81, 0x01, 0x41])) { error in

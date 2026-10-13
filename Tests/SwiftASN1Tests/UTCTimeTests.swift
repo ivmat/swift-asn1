@@ -70,9 +70,7 @@ final class UTCTimeTests: XCTestCase {
             }
         }
     }
-}
 
-extension UTCTimeTests {
     func testUTCTimeAcceptsLowerYearBoundary1950() throws {
         XCTAssertNoThrow(try UTCTime(year: 1950, month: 1, day: 1, hours: 0, minutes: 0, seconds: 0))
     }
