@@ -370,6 +370,7 @@ class ASN1Tests: XCTestCase {
 
         XCTAssertThrowsError(
             try DER.sequence(parsed, identifier: .sequence) { nodes in
+                // This is fine.
                 XCTAssertNoThrow(try ASN1OctetString(derEncoded: &nodes))
             }
         ) { error in
@@ -1660,12 +1661,12 @@ class ASN1Tests: XCTestCase {
     func testDERRejectsExplicitlyEncodedDefault() throws {
         // A field equal to its DEFAULT value must be absent in DER.
         let node = try DER.parse([0x30, 0x03, 0x02, 0x01, 0x01])
-        XCTAssertThrowsError(
-            try DER.sequence(node, identifier: .sequence) { nodes in
+        try DER.sequence(node, identifier: .sequence) { nodes in
+            XCTAssertThrowsError(
                 try DER.decodeDefault(&nodes, identifier: .integer, defaultValue: 1) { try Int(derEncoded: $0) }
+            ) { error in
+                XCTAssertEqual((error as? ASN1Error)?.code, .invalidASN1Object)
             }
-        ) { error in
-            XCTAssertEqual((error as? ASN1Error)?.code, .invalidASN1Object)
         }
     }
 

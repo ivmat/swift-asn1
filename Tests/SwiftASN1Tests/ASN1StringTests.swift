@@ -156,9 +156,11 @@ final class ASN1StringTests: XCTestCase {
         let newString = String(utf8String)
         XCTAssertEqual(newString, string)
 
-        let nonASCIIString = ASN1UTF8String("é")
+        // A String value, so this calls init(_:) rather than init(stringLiteral:).
+        let nonASCIIValue: String = "é"
+        let nonASCIIString = ASN1UTF8String(nonASCIIValue)
         XCTAssertEqual(nonASCIIString.bytes, [0xc3, 0xa9])
-        XCTAssertEqual(String(nonASCIIString), "é")
+        XCTAssertEqual(String(nonASCIIString), nonASCIIValue)
     }
 
     func testPrintableStringCanCreateAString() throws {
